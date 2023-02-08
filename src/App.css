@@ -14,9 +14,9 @@
 }
 
 .App-header {
+  display: none;
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -35,4 +35,132 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* Components */
+
+
+button {
+  border-radius: 0.75em;
+  padding: 0.5em 1em;   
+  border: 1px solid #282c34;
+  background-color: #ddf;
+  cursor: pointer;
+}
+button[disabled] {
+  color: #777;
+  background-color: #eee;
+  border: 1px solid #777; 
+  cursor: not-allowed;
+}
+
+
+/** App */
+
+* {
+  box-sizing: border-box;
+  color: #282c34;
+}
+
+.App {
+  display: grid;
+  grid-template-areas:
+    "menu contents request"
+    "menu contents response";
+}
+
+.layout {
+  display: grid;
+  height: 100vh;
+  grid-template-areas:
+    "form request"
+    "form request"
+    "form response"
+    "tokens response";
+}
+.layout__form {
+  grid-area: form;
+  height: 80vh;
+  width: 35vw;
+  border-right: 1px solid #282c34;
+  border-bottom: 1px solid #282c34;
+}
+.layout__request {
+  grid-area: request;
+  height: 50vh;
+  width: 50vw;
+  border-bottom: 1px solid #282c34;
+}
+.layout__response {
+  grid-area: response;
+  height: 50vh;
+  width: 50vw;
+}
+.layout__tokens {
+  grid-area: tokens;
+  height: 20vh;
+  width: 35vw;
+  border-right: 1px solid #282c34;
+}
+
+.layout--json {
+  font-family: monospace;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  text-align: start;
+}
+
+
+/* Menu */
+
+.menu {
+  grid-area: menu;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #282c34;
+  height: 100vh;
+  padding: 1em 0.5em;
+  overflow-y: auto;
+}
+.menu--open {
+  width: 15vw;
+}
+.menu--closed {
+  width: 3.5em;
+}
+.menu__toggle-button {
+  display: flex;
+  align-self: flex-end;
+}
+
+.menu__feature {
+  display: flex;
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  border-top-left-radius: 0.75em;
+  border-left: 2px solid #ddf;
+  border-top: 2px solid #ddf;
+  cursor: pointer;
+}
+.menu__feature:hover {
+  background-color: #ddf;
+}
+.menu__feature--open {
+  background-color: #ddf;
+}
+
+.menu__feature-actions {
+  text-align: start;
+  border-left: 2px solid #ddf;
+}
+.menu__feature-actions__action {
+  font-size: 0.9em;
+  padding: 0.25em 0 0.25em 0.5em;
+  cursor: pointer;
+}
+.menu__feature-actions__action:hover {
+  background-color: #ddf;
 }
