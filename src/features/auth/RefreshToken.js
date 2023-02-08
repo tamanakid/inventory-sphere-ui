@@ -47,9 +47,7 @@ function RefreshToken(props) {
     return (
         <Layout
             form={(<div>
-                <div>
-                    Refresh Token
-                </div>
+                <div className="form__title">Refresh Access Token</div>
                 <button disabled={isExecuteDisabled} onClick={buildRequest}>Execute</button>
             </div>)}
             tokens={props.tokens}

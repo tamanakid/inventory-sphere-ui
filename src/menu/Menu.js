@@ -38,12 +38,12 @@ function Menu(props) {
 
     return (
         <div className={`menu ${isOpen ? "menu--open": "menu--closed"}`}>
-            <button
+            {/* <button
                 className={'menu__toggle-button'}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {isOpen ? '<' : '>' }
-            </button>
+            </button> */}
 
             {isOpen ? getMenuItems() : ''}
         </div>

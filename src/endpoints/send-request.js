@@ -9,27 +9,30 @@ const SERVER_API_PATH = '/api/internal';
  * *  @param {string} endpoint
  * *  @param {string} method
  * *  @param {object | undefined} body
+ * *  @param {string} accessToken
+ * *  @param {object | undefined} queryParams
  */
 
 
 export function sendRequest(params) {
-    const url = `${SERVER_ADRESS}${SERVER_API_PATH}${params.endpoint}`;
+    const parsedQueryParams = params.queryParams ?
+        Object.entries(params.queryParams)
+            .map(([key, val], i) => `${i === 0 ? '?' : '&'}${key}=${val}`).join('') : '';
+
+    const url = `${SERVER_ADRESS}${SERVER_API_PATH}${params.endpoint}${parsedQueryParams}`;
 
     const headers =  {
         'Content-Type': 'application/json',
     }
-    
+
     if (params.accessToken) {
-        headers['Authentication'] = `Bearer ${params.accessToken}`;
+        headers['Authorization'] = `Bearer ${params.accessToken}`;
     }
 
     return fetch(url, {
         method: params.method,
         body: params.body ? JSON.stringify(params.body) : null,
         // mode: 'cors',
-        // headers: new Headers({
-        //     'Content-Type': 'application/json'
-        // })
         headers,
     })
     .then(async (res) => {
@@ -37,13 +40,16 @@ export function sendRequest(params) {
             url: res.url,
             method: params.method,
             body: await res.json(),
+            status: 'success',
         };
     })
-
-    // .catch(response => {
-    //     console.log(response.json());
-    //     return {
-    //         response
-    //     };
-    // })
+    .catch(error => {
+        console.error(error);
+        return {
+            url: url,
+            method: params.method,
+            errorMsg: error.message,
+            status: 'error',
+        };
+    })
 }

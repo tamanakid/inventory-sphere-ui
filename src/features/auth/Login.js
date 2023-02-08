@@ -42,14 +42,12 @@ function Login(props) {
     return (
         <Layout
             form={(<div>
-                <div>
-                    Login
-                </div>
-                <div>
+                <div className="form__title">Login</div>
+                <div className="form__field">
                     <label>Email</label>
                     <input value={email} onInput={(event) => setEmail(event.target.value)} />
                 </div>
-                <div>
+                <div className="form__field">
                     <label>Password</label>
                     <input value={password} onInput={(event) => setPassword(event.target.value)} />
                 </div>

@@ -1,19 +1,19 @@
-import Login from '../features/auth/Login';
-import RefreshToken from '../features/auth/RefreshToken';
+import { Login, RefreshToken } from '../features/auth';
+import { LocationLevelsGetList } from '../features/location-levels';
 
 
 const menuItems = [
     {
         title: 'Authentication',
         actions: [
-            { title: 'Log In', component: Login },
+            { title: 'Login', component: Login },
             { title: 'Refresh Access Token', component: RefreshToken },
         ]
     },
     {
         title: 'Location Levels',
         actions: [
-            { title: 'Get List', endpoint: '/' },
+            { title: 'Get List', component: LocationLevelsGetList },
             { title: 'Get Tree', endpoint: '/' },
             { title: 'Create', endpoint: '/' },
             { title: 'Get Instance', endpoint: '/' },

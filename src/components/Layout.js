@@ -66,16 +66,25 @@ function Layout(props) {
             case 'none':
                 return '';
             case 'loading':
-                return <div>Loading...</div>;
+                return (<>
+                    <div class="layout__title">Response</div>
+                    <div>Loading...</div>
+                </>);
             case 'success':
                 return (<div>
-                    <div>URL: {props.response.url} ({props.response.method})</div>
+                    <div class="layout__title">
+                        Response
+                        <div className="layout__title__url">{props.response.url} ({props.response.method})</div>
+                    </div>
                     <div className="layout--json">{formatJsonObject(props.response.body)}</div>
                 </div>);
             case 'error':
                 return (<div>
-                    <div>URL: {props.response.url} ({props.response.method})</div>
-                    <div className="layout--json">{formatJsonObject(props.response.body)}</div>
+                    <div class="layout__title">
+                        Response
+                        <div className="layout__title__url">{props.response.url} ({props.response.method})</div>
+                    </div>
+                    <div className="layout--json">{props.response.errorMsg}</div>
                 </div>);
         }
     }
@@ -85,20 +94,21 @@ function Layout(props) {
 
     return (
         <div className="layout">
-            <div className="layout__form">
+            <div className="layout-section layout__form">
                 {props.form}
             </div>
 
-            <div className="layout__tokens">
+            <div className="layout-section layout__tokens">
                 <div>{accessTokenDate ? `Access token: set ${accessTokenDate}` : `No Access token`}</div>
                 <div>{refreshTokenDate ? `Refresh token: set ${refreshTokenDate}` : `No Refresh token`}</div>
             </div>
 
-            <div className="layout__request layout--json">
+            <div className="layout-section layout__request layout--json">
+                <div class="layout__title">Request Body</div>
                 {formatJsonObject(props.request)}
             </div>
 
-            <div className="layout__response">
+            <div className="layout-section layout__response">
                 {_buildResponse()}
             </div>
         </div>
