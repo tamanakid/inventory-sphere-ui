@@ -7,7 +7,7 @@ import { sendRequest } from '../../endpoints/send-request';
 const endpoint = '/location_levels/';
 
 
-function LocationLevelsCreate(props) {
+function LocationsCreate(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -57,7 +57,6 @@ function LocationLevelsCreate(props) {
             form={(<div>
                 <div className="form__title">Location Levels - Create</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
-                    <div>Request Body:</div>
                     <div className="form__field">
                         <label>Name</label>
                         <input value={name} onInput={(event) => setName(event.target.value)} />
@@ -85,4 +84,4 @@ function LocationLevelsCreate(props) {
     );
 }
 
-export default LocationLevelsCreate;
+export default LocationsCreate;

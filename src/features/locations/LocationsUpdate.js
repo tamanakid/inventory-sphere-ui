@@ -1,30 +1,38 @@
 import { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
 import { sendRequest } from '../../endpoints/send-request';
 
+import Layout from '../../components/Layout';
+import Selector from '../../components/Selector';
+import SelectorMultiple from '../../components/SelectorMultiple';
 
 
-const endpoint = '/location_levels/';
 
-
-function LocationLevelsCreate(props) {
+function LocationsUpdate(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
+    const [instanceId, setInstanceId] = useState(-1);
     const [name, setName] = useState('');
     const [isRootStorageLevel, setIsRootStorageLevel] = useState(false);
-
-    const [parentOptions, setParentOptions] = useState([]);
     const [parentId, setParentId] = useState(-1);
+
+    const [locationLevelOptions, setLocationLevelOptions] = useState([]);
+
+    // Cool effect: when selecting instance, automatically select parent
+    useEffect(() => {
+        const instanceSelected = locationLevelOptions.find(opt => opt.id == instanceId);
+        if (instanceSelected)
+            setParentId(instanceSelected.parent ?? -1);
+    }, [instanceId]);
 
     // At component start: load existing LocationLevel parents
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        getParentOptions();
+        getLocationLevelOptions();
     }, []);
 
-    async function getParentOptions() {
+    async function getLocationLevelOptions() {
         setIsLoading(true);
         const response = await sendRequest({
             endpoint: '/location_levels/',
@@ -32,15 +40,21 @@ function LocationLevelsCreate(props) {
             accessToken: props.tokens.accessTokenData.token
         });
         if (response.body?.['status_code'] === 200) {
-            setParentOptions(response.body.data.results);
+            setLocationLevelOptions(response.body.data.results);
         }
         setIsLoading(false);
     }
 
+    // Set endpoint URL with id param
+    const [endpoint, setEndpoint] = useState('/location_levels/');
+    useEffect(() => {
+        setEndpoint(`/location_levels/${instanceId}`);
+    }, [instanceId]);
+
     async function executeRequest() {
         const request = {
             endpoint,
-            method: 'POST',
+            method: 'PUT',
             body: { name, 'is_root_storage_level': isRootStorageLevel, parent: parentId },
             accessToken: props.tokens.accessTokenData.token
         };
@@ -55,9 +69,15 @@ function LocationLevelsCreate(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location Levels - Create</div>
+                <div className="form__title">Location Levels - Update</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
-                    <div>Request Body:</div>
+                    <div className="form__field">
+                        <label>Instance</label>
+                        <Selector
+                            id={instanceId} setId={setInstanceId} options={locationLevelOptions}
+                            customOptionText={(opt) => <>{opt.name} ({opt.id}) {opt.is_root_storage_level ? '[RS]' : ''}</>}
+                        />
+                    </div>
                     <div className="form__field">
                         <label>Name</label>
                         <input value={name} onInput={(event) => setName(event.target.value)} />
@@ -68,12 +88,10 @@ function LocationLevelsCreate(props) {
                     </div>
                     <div className="form__field">
                         <label>Parent Location Level</label>
-                        <select value={parentId} onChange={(event) => setParentId(event.target.value)}>
-                            <option value={-1} disabled>Select an Option</option>
-                            {parentOptions.map(opt => (
-                                <option key={opt.id} value={opt.id}>{opt.name} {opt.is_root_storage_level ? '(Root Storage)' : ''}</option>
-                            ))}
-                        </select>
+                        <Selector
+                            id={parentId} setId={setParentId} options={locationLevelOptions}
+                            customOptionText={(opt) => <>{opt.name} ({opt.id}) {opt.is_root_storage_level ? '[RS]' : ''}</>}
+                        />
                     </div>
                     <button disabled={isLoading} onClick={executeRequest}>Execute</button>
                 </>}
@@ -85,4 +103,4 @@ function LocationLevelsCreate(props) {
     );
 }
 
-export default LocationLevelsCreate;
+export default LocationsUpdate;

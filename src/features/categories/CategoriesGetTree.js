@@ -4,22 +4,17 @@ import { sendRequest } from '../../endpoints/send-request';
 
 
 
-const endpoint = '/location_levels/';
+const endpoint = '/categories/tree/';
 
 
-function LocationLevelsGetList(props) {
+function CategoriesGetTree(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
-
-    // Form fields
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(100);
 
     async function executeRequest() {
         const request = {
             endpoint,
             method: 'GET',
-            queryParams: { page, size },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -33,16 +28,7 @@ function LocationLevelsGetList(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location Levels - Get List</div>
-                <div>Query Params:</div>
-                <div className="form__field">
-                    <label>Page Number</label>
-                    <input value={page} onInput={(event) => setPage(event.target.value)} />
-                </div>
-                <div className="form__field">
-                    <label>Page Size (Default: 100)</label>
-                    <input value={size} onInput={(event) => setSize(event.target.value)} />
-                </div>
+                <div className="form__title">Categories - Get Tree</div>
                 <button onClick={executeRequest}>Execute</button>
             </div>)}
             tokens={props.tokens}
@@ -52,4 +38,4 @@ function LocationLevelsGetList(props) {
     );
 }
 
-export default LocationLevelsGetList;
+export default CategoriesGetTree;

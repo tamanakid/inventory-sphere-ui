@@ -107,14 +107,14 @@ button[disabled] {
   grid-area: request;
   height: 40vh;
   width: 50vw;
-  background-color: #eff7ef;
+  background-color: #adf;
   border-bottom: 3px double #282c34;
 }
 .layout__response {
   grid-area: response;
   height: 60vh;
   width: 50vw;
-  background-color: #eff7ef;
+  background-color: #adf;
 }
 
 .layout--json {
@@ -136,7 +136,7 @@ button[disabled] {
   position: sticky;
   top: 0px;
   background-color: inherit;
-  background-color: #eff7ef;
+  background-color: #adf;
   border-bottom: 1px solid #ddf;
 }
 .layout__title__url {

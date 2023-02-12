@@ -96,6 +96,7 @@ function Layout(props) {
 
     const accessTokenDate = props.tokens.accessTokenData?.date;
     const refreshTokenDate = props.tokens.refreshTokenData?.date;
+    const tokenUser = props.tokens.refreshTokenData?.email;
 
     return (
         <div className="layout">
@@ -106,6 +107,7 @@ function Layout(props) {
             <div className="layout-section layout__tokens">
                 <div>{accessTokenDate ? `Access token: set ${accessTokenDate}` : `No Access token`}</div>
                 <div>{refreshTokenDate ? `Refresh token: set ${refreshTokenDate}` : `No Refresh token`}</div>
+                <div>{tokenUser ? <b>{tokenUser}</b> : 'User Not found'}</div>
             </div>
 
             <div className="layout-section layout__request layout--json">

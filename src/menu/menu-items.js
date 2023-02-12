@@ -2,6 +2,12 @@ import { Login, RefreshToken } from '../features/auth';
 import {
     LocationLevelsGetList, LocationLevelsCreate, LocationLevelsGetInstance,
     LocationLevelsUpdate, LocationLevelsDelete } from '../features/location-levels';
+import {
+    LocationsGetList, LocationsGetTree, LocationsCreate, LocationsGetInstance,
+    LocationsUpdate, LocationsDelete } from '../features/locations';
+import {
+    CategoriesGetList, CategoriesGetTree, CategoriesCreate, CategoriesGetInstance,
+    CategoriesUpdate, CategoriesDelete } from '../features/categories'
 
 
 const menuItems = [
@@ -22,28 +28,28 @@ const menuItems = [
             { title: 'Delete', component: LocationLevelsDelete },
         ]
     },
-    // {
-    //     title: 'Locations',
-    //     actions: [
-    //     { title: 'Get List', endpoint: '/' },
-    //     { title: 'Get Tree', endpoint: '/' },
-    //     { title: 'Create', endpoint: '/' },
-    //     { title: 'Get Instance', endpoint: '/' },
-    //     { title: 'Update', endpoint: '/' },
-    //     { title: 'Delete', endpoint: '/' }
-    //     ]
-    // },
-    // {
-    //     title: 'Categories',
-    //     actions: [
-    //     { title: 'Get List', endpoint: '/' },
-    //     { title: 'Get Tree', endpoint: '/' },
-    //     { title: 'Create', endpoint: '/' },
-    //     { title: 'Get Instance', endpoint: '/' },
-    //     { title: 'Update', endpoint: '/' },
-    //     { title: 'Delete', endpoint: '/' }
-    //     ]
-    // },
+    {
+        title: 'Locations',
+        actions: [
+            { title: 'Get List', component: LocationsGetList },
+            { title: 'Get Tree', component: LocationsGetTree },
+            // { title: 'Create', component: LocationsCreate },
+            // { title: 'Get Instance', component: LocationsGetInstance },
+            // { title: 'Update', component: LocationsUpdate },
+            // { title: 'Delete', component: LocationsDelete },
+        ]
+    },
+    {
+        title: 'Categories',
+        actions: [
+            { title: 'Get List', component: CategoriesGetList },
+            { title: 'Get Tree', component: CategoriesGetTree },
+            { title: 'Create', component: CategoriesCreate },
+            { title: 'Get Instance', component: CategoriesGetInstance },
+            { title: 'Update', component: CategoriesUpdate },
+            { title: 'Delete', component: CategoriesDelete },
+        ]
+    },
     // {
     //     title: 'Attributes',
     //     actions: [

@@ -1,26 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { sendRequest } from '../../endpoints/send-request';
 
 
 
-function LocationLevelsGetInstance(props) {
+const endpoint = '/locations/';
+
+
+function LocationsGetList(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
-    const [instanceId, setInstanceId] = useState('');
-
-    // Set endpoint URL with id param
-    const [endpoint, setEndpoint] = useState('/location_levels/');
-    useEffect(() => {
-        setEndpoint(`/location_levels/${instanceId}`);
-    }, [instanceId]);
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(100);
 
     async function executeRequest() {
         const request = {
             endpoint,
             method: 'GET',
+            queryParams: { page, size },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -34,10 +33,14 @@ function LocationLevelsGetInstance(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location Levels - Get Instance</div>
+                <div className="form__title">Locations - Get List</div>
                 <div className="form__field">
-                    <label>Instance ID</label>
-                    <input value={instanceId} onInput={(event) => setInstanceId(event.target.value)} />
+                    <label>Page Number</label>
+                    <input value={page} onInput={(event) => setPage(event.target.value)} />
+                </div>
+                <div className="form__field">
+                    <label>Page Size (Default: 100)</label>
+                    <input value={size} onInput={(event) => setSize(event.target.value)} />
                 </div>
                 <button onClick={executeRequest}>Execute</button>
             </div>)}
@@ -48,4 +51,4 @@ function LocationLevelsGetInstance(props) {
     );
 }
 
-export default LocationLevelsGetInstance;
+export default LocationsGetList;

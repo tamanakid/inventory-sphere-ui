@@ -9,7 +9,7 @@ import SelectorMultiple from '../../components/SelectorMultiple';
 const endpoint = '/location_levels/delete/';
 
 
-function LocationLevelsDelete(props) {
+function LocationsDelete(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -60,7 +60,6 @@ function LocationLevelsDelete(props) {
             form={(<div>
                 <div className="form__title">Location Levels - Delete</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
-                    <div>Request Body:</div>
                     <div className="form__field">
                         <label>Parent Location Level</label>
                         <SelectorMultiple
@@ -77,4 +76,4 @@ function LocationLevelsDelete(props) {
     );
 }
 
-export default LocationLevelsDelete;
+export default LocationsDelete;

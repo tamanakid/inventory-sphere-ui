@@ -31,7 +31,7 @@ function Login(props) {
         if (response.body?.['status_code'] === 200) {
             const date = new Date().toLocaleString('en-GB');
             const accessTokenData = { token: response.body.data.access, date };
-            const refreshTokenData = { token: response.body.data.refresh, date };
+            const refreshTokenData = { token: response.body.data.refresh, date, email };
 
             props.setTokens({ accessTokenData, refreshTokenData });
             setTokens({ accessTokenData, refreshTokenData });

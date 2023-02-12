@@ -4,7 +4,7 @@ import { sendRequest } from '../../endpoints/send-request';
 
 
 
-function LocationLevelsGetInstance(props) {
+function CategoriesGetInstance(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -12,9 +12,9 @@ function LocationLevelsGetInstance(props) {
     const [instanceId, setInstanceId] = useState('');
 
     // Set endpoint URL with id param
-    const [endpoint, setEndpoint] = useState('/location_levels/');
+    const [endpoint, setEndpoint] = useState('/categories/');
     useEffect(() => {
-        setEndpoint(`/location_levels/${instanceId}`);
+        setEndpoint(`/categories/${instanceId}`);
     }, [instanceId]);
 
     async function executeRequest() {
@@ -34,7 +34,7 @@ function LocationLevelsGetInstance(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location Levels - Get Instance</div>
+                <div className="form__title">Categories - Get Instance</div>
                 <div className="form__field">
                     <label>Instance ID</label>
                     <input value={instanceId} onInput={(event) => setInstanceId(event.target.value)} />
@@ -48,4 +48,4 @@ function LocationLevelsGetInstance(props) {
     );
 }
 
-export default LocationLevelsGetInstance;
+export default CategoriesGetInstance;

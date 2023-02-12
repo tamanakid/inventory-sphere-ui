@@ -4,7 +4,7 @@ import { sendRequest } from '../../endpoints/send-request';
 
 
 
-function LocationLevelsGetInstance(props) {
+function LocationsGetInstance(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -48,4 +48,4 @@ function LocationLevelsGetInstance(props) {
     );
 }
 
-export default LocationLevelsGetInstance;
+export default LocationsGetInstance;

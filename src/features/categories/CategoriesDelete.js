@@ -6,32 +6,32 @@ import SelectorMultiple from '../../components/SelectorMultiple';
 
 
 
-const endpoint = '/location_levels/delete/';
+const endpoint = '/categories/delete/';
 
 
-function LocationLevelsDelete(props) {
+function CategoriesDelete(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
     const [selectedIds, setSelectedIds] = useState([]);
-    const [locationLevelOptions, setLocationLevelOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([]);
 
     // At component start: load existing LocationLevel parents
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        getLocationLevelOptions();
+        getCategoryOptions();
     }, []);
 
-    async function getLocationLevelOptions() {
+    async function getCategoryOptions() {
         setIsLoading(true);
         const response = await sendRequest({
-            endpoint: '/location_levels/',
+            endpoint: '/categories/',
             method: 'GET',
             accessToken: props.tokens.accessTokenData.token
         });
         if (response.body?.['status_code'] === 200) {
-            setLocationLevelOptions(response.body.data.results);
+            setCategoryOptions(response.body.data.results);
         }
         setIsLoading(false);
     }
@@ -58,14 +58,12 @@ function LocationLevelsDelete(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location Levels - Delete</div>
+                <div className="form__title">Categories - Delete</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
                     <div>Request Body:</div>
                     <div className="form__field">
                         <label>Parent Location Level</label>
-                        <SelectorMultiple
-                            ids={selectedIds} setIds={setSelectedIds} options={locationLevelOptions}
-                        />
+                        <SelectorMultiple ids={selectedIds} setIds={setSelectedIds} options={categoryOptions} />
                     </div>
                     <button disabled={isLoading} onClick={executeRequest}>Execute</button>
                 </>}
@@ -77,4 +75,4 @@ function LocationLevelsDelete(props) {
     );
 }
 
-export default LocationLevelsDelete;
+export default CategoriesDelete;
