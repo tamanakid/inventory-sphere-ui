@@ -1,5 +1,5 @@
 
-const INDENT_CHAR = '⠀'
+const INDENT_CHAR = '⠀';
 
 function formatJsonObject(jsonObject, indentIndex = 0) {
     if (!jsonObject) return '';
@@ -12,7 +12,9 @@ function formatJsonObject(jsonObject, indentIndex = 0) {
         formatted += `[\n`;
         jsonObject.forEach(value => {
             const fieldIndentSpaces = Array(indentIndex*2 + 2).join(INDENT_CHAR);
-            if (typeof value !== 'object') {
+            if (value === null) {
+                formatted += `${fieldIndentSpaces} null,`;
+            } else if (typeof value !== 'object') {
                 // Primitive values
                 formatted += `${fieldIndentSpaces} ${value},`;
             } else if (Array.isArray(value)) {
@@ -32,7 +34,9 @@ function formatJsonObject(jsonObject, indentIndex = 0) {
     formatted += `{\n`;
     Object.entries(jsonObject).forEach(([key, value]) => {
         const fieldIndentSpaces = Array(indentIndex*2 + 2).join(INDENT_CHAR);
-        if (typeof value !== 'object') {
+        if (value === null) {
+            formatted += `${fieldIndentSpaces} ${key}: null`;
+        } else if (typeof value !== 'object') {
             // Primitive values
             formatted += `${fieldIndentSpaces} ${key}: ${value},`;
         } else if (Array.isArray(value)) {
@@ -67,12 +71,12 @@ function Layout(props) {
                 return '';
             case 'loading':
                 return (<>
-                    <div class="layout__title">Response</div>
+                    <div className="layout__title">Response</div>
                     <div>Loading...</div>
                 </>);
             case 'success':
                 return (<div>
-                    <div class="layout__title">
+                    <div className="layout__title">
                         Response
                         <div className="layout__title__url">{props.response.url} ({props.response.method})</div>
                     </div>
@@ -80,7 +84,7 @@ function Layout(props) {
                 </div>);
             case 'error':
                 return (<div>
-                    <div class="layout__title">
+                    <div className="layout__title">
                         Response
                         <div className="layout__title__url">{props.response.url} ({props.response.method})</div>
                     </div>
@@ -88,6 +92,7 @@ function Layout(props) {
                 </div>);
         }
     }
+    
 
     const accessTokenDate = props.tokens.accessTokenData?.date;
     const refreshTokenDate = props.tokens.refreshTokenData?.date;
@@ -104,7 +109,7 @@ function Layout(props) {
             </div>
 
             <div className="layout-section layout__request layout--json">
-                <div class="layout__title">Request Body</div>
+                <div className="layout__title">Request Body</div>
                 {formatJsonObject(props.request)}
             </div>
 

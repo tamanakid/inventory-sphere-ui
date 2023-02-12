@@ -19,28 +19,27 @@ function RefreshToken(props) {
         setIsExecuteDisabled(!props.tokens.refreshTokenData?.token);
     }, [props.tokens.refreshTokenData]);
 
-    async function buildRequest() {
-        console.log('buildRequest');
+    async function executeRequest() {
         const refreshToken = props.tokens.refreshTokenData?.token;
         if (!refreshToken) return;
 
-        const requestBody = { refresh: refreshToken };
-        setRequest(requestBody);
-        setResponse({ status: 'loading' });
-
-        const response = await sendRequest({
+        const request = {
             endpoint,
             method: 'POST',
-            body: requestBody
-        });
+            body: { refresh: refreshToken }
+        };
+
+        setRequest(request);
+        setResponse({ status: 'loading' });
+        const response = await sendRequest(request);
 
         setResponse({ ...response, status: 'success' });
         if (response.body?.['status_code'] === 200) {
             const date = new Date().toLocaleString('en-GB');
-            const refreshTokenData = { token: response.body.data.refresh, date };
+            const accessTokenData = { token: response.body.data.access, date };
 
-            props.setTokens({ ...props.tokens, refreshTokenData });
-            setTokens({ refreshTokenData });
+            props.setTokens({ ...props.tokens, accessTokenData });
+            setTokens({ accessTokenData });
         }
     }
 
@@ -48,7 +47,7 @@ function RefreshToken(props) {
         <Layout
             form={(<div>
                 <div className="form__title">Refresh Access Token</div>
-                <button disabled={isExecuteDisabled} onClick={buildRequest}>Execute</button>
+                <button disabled={isExecuteDisabled} onClick={executeRequest}>Execute</button>
             </div>)}
             tokens={props.tokens}
             request={request}

@@ -19,7 +19,7 @@ function Menu(props) {
                             : setOpenFeatures([ ...openFeatures.filter(feature => feature !== item.title) ]);
                     }}
                 >
-                    <div>{">"} {item.title}</div>
+                    {item.title}
                 </div>
                 {isOpenFeature ? (
                     <div className="menu__feature-actions">

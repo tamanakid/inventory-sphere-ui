@@ -107,12 +107,14 @@ button[disabled] {
   grid-area: request;
   height: 40vh;
   width: 50vw;
-  
+  background-color: #eff7ef;
+  border-bottom: 3px double #282c34;
 }
 .layout__response {
   grid-area: response;
   height: 60vh;
   width: 50vw;
+  background-color: #eff7ef;
 }
 
 .layout--json {
@@ -133,7 +135,9 @@ button[disabled] {
   padding: 1em;
   position: sticky;
   top: 0px;
-  background-color: #fff;
+  background-color: inherit;
+  background-color: #eff7ef;
+  border-bottom: 1px solid #ddf;
 }
 .layout__title__url {
   font-size: 14px;
@@ -147,7 +151,7 @@ button[disabled] {
   grid-area: menu;
   display: flex;
   flex-direction: column;
-  background: #357;
+  background: #345;
   /* border-right: 1px solid #282c34; */
   height: 100vh;
   padding: 1em 0.5em;
@@ -172,12 +176,15 @@ button[disabled] {
   border-left: 2px solid #ddf;
   border-top: 2px solid #ddf;
   cursor: pointer;
+  color: #ddf;
 }
 .menu__feature:hover {
   background-color: #ddf;
+  color: #282c34;
 }
 .menu__feature--open {
   background-color: #ddf;
+  color: #282c34;
 }
 
 .menu__feature-actions {
@@ -207,14 +214,21 @@ button[disabled] {
 .form__field {
   display: flex;
   text-align: start;
+  align-items: center;
   margin: 0.5em 0;
 }
 
 .form__field > label {
-  width: 15vw;
+  width: 18vw;
   font-size: 14px;
 }
 .form__field > input {
   width: 30vw;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form__field > select {
+  width: 20vw;
+  box-sizing: border-box;
   font-size: 14px;
 }

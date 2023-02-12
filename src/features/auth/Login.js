@@ -16,17 +16,16 @@ function Login(props) {
     const [email, setEmail] = useState('david.wallace@dundermifflin.com');
     const [password, setPassword] = useState('F3hxGadB5ZFrNP4');
 
-    async function buildRequest() {
-        const requestBody = { email, password };
-
-        setRequest(requestBody);
-        setResponse({ status: 'loading' });
-
-        const response = await sendRequest({
+    async function executeRequest() {
+        const request = {
             endpoint,
             method: 'POST',
-            body: requestBody
-        });
+            body: { email, password }
+        };
+
+        setRequest(request);
+        setResponse({ status: 'loading' });
+        const response = await sendRequest(request);
 
         setResponse({ ...response, status: 'success' });
         if (response.body?.['status_code'] === 200) {
@@ -51,7 +50,7 @@ function Login(props) {
                     <label>Password</label>
                     <input value={password} onInput={(event) => setPassword(event.target.value)} />
                 </div>
-                <button onClick={buildRequest}>Execute</button>
+                <button onClick={executeRequest}>Execute</button>
             </div>)}
             tokens={props.tokens}
             request={request}

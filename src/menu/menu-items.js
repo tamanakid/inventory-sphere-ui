@@ -1,5 +1,7 @@
 import { Login, RefreshToken } from '../features/auth';
-import { LocationLevelsGetList } from '../features/location-levels';
+import {
+    LocationLevelsGetList, LocationLevelsCreate, LocationLevelsGetInstance,
+    LocationLevelsUpdate, LocationLevelsDelete } from '../features/location-levels';
 
 
 const menuItems = [
@@ -14,11 +16,10 @@ const menuItems = [
         title: 'Location Levels',
         actions: [
             { title: 'Get List', component: LocationLevelsGetList },
-            { title: 'Get Tree', endpoint: '/' },
-            { title: 'Create', endpoint: '/' },
-            { title: 'Get Instance', endpoint: '/' },
-            { title: 'Update', endpoint: '/' },
-            { title: 'Delete', endpoint: '/' }
+            { title: 'Create', component: LocationLevelsCreate },
+            { title: 'Get Instance', component: LocationLevelsGetInstance },
+            { title: 'Update', component: LocationLevelsUpdate },
+            { title: 'Delete', component: LocationLevelsDelete },
         ]
     },
     // {
