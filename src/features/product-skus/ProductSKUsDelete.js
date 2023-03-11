@@ -6,11 +6,10 @@ import SelectorMultiple from '../../components/SelectorMultiple';
 import useGetOptions from '../../utils/useGetOptions';
 
 
+const endpoint = '/product_skus/delete/';
 
-const endpoint = '/locations/delete/';
 
-
-function LocationsDelete(props) {
+function ProductSKUsDelete(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -19,7 +18,7 @@ function LocationsDelete(props) {
 
     // At component start: load options
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['locations'], setIsLoading, props.tokens.accessTokenData.token);
+    const options = useGetOptions(['product_skus'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const request = {
@@ -43,12 +42,13 @@ function LocationsDelete(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location - Delete</div>
+                <div className="form__title">Product SKUs - Delete</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
+                    <div>Request Body:</div>
                     <div className="form__field">
-                        <label>Locations</label>
-                        <SelectorMultiple
-                            ids={selectedIds} setIds={setSelectedIds} options={options['locations']}
+                        <label>Products</label>
+                        <SelectorMultiple ids={selectedIds} setIds={setSelectedIds} options={options['product_skus']}
+                            customOptionText={(opt) => `(${opt.id}) ${opt.description}`}
                         />
                     </div>
                     <button disabled={isLoading} onClick={executeRequest}>Execute</button>
@@ -61,4 +61,4 @@ function LocationsDelete(props) {
     );
 }
 
-export default LocationsDelete;
+export default ProductSKUsDelete;

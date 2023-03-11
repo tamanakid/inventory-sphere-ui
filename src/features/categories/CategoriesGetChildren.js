@@ -2,30 +2,31 @@ import { useEffect, useState } from 'react';
 import { sendRequest } from '../../endpoints/send-request';
 
 import Layout from '../../components/Layout';
-import SelectorMultiple from '../../components/SelectorMultiple';
+import Selector from '../../components/Selector';
 import useGetOptions from '../../utils/useGetOptions';
 
 
 
-const endpoint = '/locations/delete/';
-
-
-function LocationsDelete(props) {
+function CategoriesGetChildren(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
-    const [selectedIds, setSelectedIds] = useState([]);
+    const [instanceId, setInstanceId] = useState(-1);
 
-    // At component start: load options
+    // Set endpoint URL with id param
+    const [endpoint, setEndpoint] = useState('/categories/');
+    useEffect(() => {
+        setEndpoint(`/categories/${instanceId}/children/`);
+    }, [instanceId]);
+
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['locations'], setIsLoading, props.tokens.accessTokenData.token);
+    const options = useGetOptions(['categories'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const request = {
             endpoint,
-            method: 'POST',
-            body: { ids: selectedIds },
+            method: 'GET',
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -36,22 +37,16 @@ function LocationsDelete(props) {
         setResponse({ ...response });
     }
 
-    useEffect(() => {
-        console.log(selectedIds);
-    }, [selectedIds])
-
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location - Delete</div>
+                <div className="form__title">Categories - Get Children</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
                     <div className="form__field">
-                        <label>Locations</label>
-                        <SelectorMultiple
-                            ids={selectedIds} setIds={setSelectedIds} options={options['locations']}
-                        />
+                        <label>Instance</label>
+                        <Selector id={instanceId} setId={setInstanceId} options={options['categories']} />
                     </div>
-                    <button disabled={isLoading} onClick={executeRequest}>Execute</button>
+                    <button onClick={executeRequest}>Execute</button>
                 </>}
             </div>)}
             tokens={props.tokens}
@@ -61,4 +56,4 @@ function LocationsDelete(props) {
     );
 }
 
-export default LocationsDelete;
+export default CategoriesGetChildren;

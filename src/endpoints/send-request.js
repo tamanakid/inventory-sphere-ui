@@ -16,8 +16,10 @@ const SERVER_API_PATH = '/api/internal';
 
 export function sendRequest(params) {
     const parsedQueryParams = params.queryParams ?
-        Object.entries(params.queryParams)
-            .map(([key, val], i) => `${i === 0 ? '?' : '&'}${key}=${val}`).join('') : '';
+        Object.entries(params.queryParams).map(([key, val], i) => {
+            return `${i === 0 ? '?' : '&'}${key}=${val}`;
+        }).join('')
+    : '';
 
     const url = `${SERVER_ADRESS}${SERVER_API_PATH}${params.endpoint}${parsedQueryParams}`;
 

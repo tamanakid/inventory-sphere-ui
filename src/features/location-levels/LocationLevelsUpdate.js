@@ -22,7 +22,6 @@ function LocationLevelsUpdate(props) {
     useEffect(() => {
         const instanceSelected = locationLevelOptions.find(opt => opt.id == instanceId);
         if (instanceSelected) {
-            setName(instanceSelected.name ?? '');
             setParentId(instanceSelected.parent ?? -1);
         }
     }, [instanceId]);

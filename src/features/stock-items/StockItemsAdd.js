@@ -2,30 +2,30 @@ import { useEffect, useState } from 'react';
 import { sendRequest } from '../../endpoints/send-request';
 
 import Layout from '../../components/Layout';
-import SelectorMultiple from '../../components/SelectorMultiple';
+import Selector from '../../components/Selector';
 import useGetOptions from '../../utils/useGetOptions';
 
 
 
-const endpoint = '/locations/delete/';
+const endpoint = '/stock_items/';
 
-
-function LocationsDelete(props) {
+function StockItemsAdd(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
-    const [selectedIds, setSelectedIds] = useState([]);
+    const [sku, setSku] = useState(-1);
+    const [location, setLocation] = useState(-1);
 
-    // At component start: load options
+    // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['locations'], setIsLoading, props.tokens.accessTokenData.token);
+    const options = useGetOptions(['product_skus', 'locations'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const request = {
             endpoint,
             method: 'POST',
-            body: { ids: selectedIds },
+            body: { sku, location },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -36,20 +36,20 @@ function LocationsDelete(props) {
         setResponse({ ...response });
     }
 
-    useEffect(() => {
-        console.log(selectedIds);
-    }, [selectedIds])
-
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Location - Delete</div>
+                <div className="form__title">Stock Item - Add</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
+                    <div>Request Body:</div>
                     <div className="form__field">
-                        <label>Locations</label>
-                        <SelectorMultiple
-                            ids={selectedIds} setIds={setSelectedIds} options={options['locations']}
-                        />
+                        <label>Product SKU</label>
+                        <Selector id={sku} setId={setSku} options={options['product_skus']}
+                            customOptionText={(opt) => `(${opt.id}) ${opt.description}`} />
+                    </div>
+                    <div className="form__field">
+                        <label>Location</label>
+                        <Selector id={location} setId={setLocation} options={options['locations']}/>
                     </div>
                     <button disabled={isLoading} onClick={executeRequest}>Execute</button>
                 </>}
@@ -61,4 +61,4 @@ function LocationsDelete(props) {
     );
 }
 
-export default LocationsDelete;
+export default StockItemsAdd;

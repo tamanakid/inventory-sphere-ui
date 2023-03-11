@@ -6,28 +6,26 @@ import Selector from '../../components/Selector';
 import useGetOptions from '../../utils/useGetOptions';
 
 
+const endpoint = '/attribute_values/';
 
-function CategoriesGetInstance(props) {
+function AttributeValuesCreate(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
-    const [instanceId, setInstanceId] = useState(-1);
-
-    // Set endpoint URL with id param
-    const [endpoint, setEndpoint] = useState('/categories/');
-    useEffect(() => {
-        setEndpoint(`/categories/${instanceId}`);
-    }, [instanceId]);
+    const [name, setName] = useState('');
+    const [attribute, setAttribute] = useState(-1);
+    const [abbreviation, setAbbreviation] = useState('');
 
     // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['categories'], setIsLoading, props.tokens.accessTokenData.token);
+    const options = useGetOptions(['attributes'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const request = {
             endpoint,
-            method: 'GET',
+            method: 'POST',
+            body: { name, attribute, abbreviation: abbreviation ? abbreviation : null },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -41,11 +39,20 @@ function CategoriesGetInstance(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Categories - Get Instance</div>
+                <div className="form__title">Attributes - Create</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
+                    <div>Request Body:</div>
                     <div className="form__field">
-                        <label>Instance</label>
-                        <Selector id={instanceId} setId={setInstanceId} options={options['categories']} />
+                        <label>Name</label>
+                        <input value={name} onInput={(event) => setName(event.target.value)} />
+                    </div>
+                    <div className="form__field">
+                        <label>Parent Attribute</label>
+                        <Selector id={attribute} setId={setAttribute} options={options['attributes'] ?? []} />
+                    </div>
+                    <div className="form__field">
+                        <label>Abbreviation</label>
+                        <input value={abbreviation} onInput={(event) => setAbbreviation(event.target.value)} />
                     </div>
                     <button onClick={executeRequest}>Execute</button>
                 </>}
@@ -57,4 +64,4 @@ function CategoriesGetInstance(props) {
     );
 }
 
-export default CategoriesGetInstance;
+export default AttributeValuesCreate;

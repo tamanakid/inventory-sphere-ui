@@ -8,14 +8,15 @@ import useGetOptions from '../../utils/useGetOptions';
 
 
 
-function CategoriesUpdate(props) {
+function ProductsUpdate(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
     const [instanceId, setInstanceId] = useState(-1);
     const [name, setName] = useState('');
-    const [parentId, setParentId] = useState(-1);
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState(-1);
     const [attributesRequired, setAttributesRequired] = useState([]);
     const [attributesNotRequired, setAttributesNotRequired] = useState([]);
 
@@ -27,14 +28,15 @@ function CategoriesUpdate(props) {
 
     async function getCategoryDetails() {
         const response = await sendRequest({
-            endpoint: `/categories/${instanceId}`,
+            endpoint: `/products/${instanceId}`,
             method: 'GET',
             accessToken: props.tokens.accessTokenData.token
         });
         if (response.body?.['status_code'] === 200) {
             const instanceData = response.body.data;
             setName(instanceData.name ?? '');
-            setParentId(instanceData.parent ?? -1);
+            setBrand(instanceData.brand ?? '');
+            setCategory(instanceData.category?.id ?? -1);
             setAttributesRequired(instanceData.attributes.filter(a => a['is_attribute_required']).map(a => a.id));
             setAttributesNotRequired(instanceData.attributes.filter(a => !a['is_attribute_required']).map(a => a.id));
         }
@@ -42,20 +44,20 @@ function CategoriesUpdate(props) {
 
     // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['categories', 'attributes'], setIsLoading, props.tokens.accessTokenData.token);
+    const options = useGetOptions(['categories', 'attributes', 'products'], setIsLoading, props.tokens.accessTokenData.token);
 
     // Set endpoint URL with id param
-    const [endpoint, setEndpoint] = useState('/categories/');
+    const [endpoint, setEndpoint] = useState('/products/');
     useEffect(() => {
-        setEndpoint(`/categories/${instanceId}`);
+        setEndpoint(`/products/${instanceId}`);
     }, [instanceId]);
 
     async function executeRequest() {
-        const parent = parentId == -1 ? null : parentId;
+        const parent = category == -1 ? null : category;
         const request = {
             endpoint,
             method: 'PUT',
-            body: { name, parent, 'attribute_ids_required': attributesRequired, 'attribute_ids_not_required': attributesNotRequired, },
+            body: { name, brand, category, 'attribute_ids_required': attributesRequired, 'attribute_ids_not_required': attributesNotRequired, },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -69,11 +71,11 @@ function CategoriesUpdate(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Categories - Update</div>
+                <div className="form__title">Products - Update</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
                     <div className="form__field">
                         <label>Instance</label>
-                        <Selector id={instanceId} setId={setInstanceId} options={options['categories'] ?? []} />
+                        <Selector id={instanceId} setId={setInstanceId} options={options['products'] ?? []} />
                     </div>
                     <div>Request Body:</div>
                     <div className="form__field">
@@ -81,8 +83,12 @@ function CategoriesUpdate(props) {
                         <input value={name} onInput={(event) => setName(event.target.value)} />
                     </div>
                     <div className="form__field">
+                        <label>Brand</label>
+                        <input value={brand} onInput={(event) => setBrand(event.target.value)} />
+                    </div>
+                    <div className="form__field">
                         <label>Parent Category</label>
-                        <Selector id={parentId} setId={setParentId} options={options['categories'] ?? []} />
+                        <Selector id={category} setId={setCategory} options={options['categories'] ?? []} />
                     </div>
                     <div className="form__field">
                         <label>Attributes (Required)</label>
@@ -106,4 +112,4 @@ function CategoriesUpdate(props) {
     );
 }
 
-export default CategoriesUpdate;
+export default ProductsUpdate;

@@ -17,7 +17,7 @@ function Selector(props) {
         <select value={props.id} onChange={(event) => props.setId(event.target.value)}>
             <option value={-1}>Select an Option</option>
             {props.options.map(opt => (
-                <option key={opt.id} value={opt.id} title={opt.name}>
+                <option key={opt.id} value={opt.id} title={props.customOptionText?.(opt) ?? opt.name}>
                     {props.customOptionText?.(opt) ?? `(${opt.id}) ${opt.name}`}
                 </option>
             ))}

@@ -28,7 +28,7 @@ function SelectorMultiple(props) {
         <select multiple value={props.ids} onChange={(event) => onSelectOption(event.target.value)}>
             <option value={-1}>Clear</option>
             {props.options.map(opt => (
-                <option key={opt.id} value={opt.id} title={opt.name}>
+                <option key={opt.id} value={opt.id} title={props.customOptionText?.(opt) ?? opt.name}>
                     {props.customOptionText?.(opt) ?? `(${opt.id}) ${opt.name}`}
                 </option>
             ))}

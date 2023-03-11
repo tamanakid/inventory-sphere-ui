@@ -1,24 +1,25 @@
-import { useState } from 'react';
-import Layout from '../../components/Layout';
+import { useState, useEffect } from 'react';
 import { sendRequest } from '../../endpoints/send-request';
 
+import Layout from '../../components/Layout';
 
 
-const endpoint = '/locations/';
+
+const endpoint = '/attributes/';
 
 
-function LocationsGetList(props) {
+function AttributesGetList(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(100);
-    const [all, setAll] = useState(false);
+    const [name, setName] = useState('');
 
     async function executeRequest() {
         const queryParams = { page, size };
-        if (all) queryParams.all = true;
+        if (name) queryParams.name = name;
 
         const request = {
             endpoint,
@@ -37,7 +38,8 @@ function LocationsGetList(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Locations - Get List</div>
+                <div className="form__title">Attributes - Get List</div>
+                <div>Query Params:</div>
                 <div className="form__field">
                     <label>Page Number</label>
                     <input value={page} onInput={(event) => setPage(event.target.value)} />
@@ -47,8 +49,8 @@ function LocationsGetList(props) {
                     <input value={size} onInput={(event) => setSize(event.target.value)} />
                 </div>
                 <div className="form__field">
-                    <label>All Locations</label>
-                    <input type="checkbox" checked={all} onChange={(event) => setAll(event.target.checked)} />
+                    <label>Name</label>
+                    <input value={name} onInput={(event) => setName(event.target.value)} />
                 </div>
                 <button onClick={executeRequest}>Execute</button>
             </div>)}
@@ -59,4 +61,4 @@ function LocationsGetList(props) {
     );
 }
 
-export default LocationsGetList;
+export default AttributesGetList;

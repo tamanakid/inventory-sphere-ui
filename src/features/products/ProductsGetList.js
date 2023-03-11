@@ -7,10 +7,10 @@ import useGetOptions from '../../utils/useGetOptions';
 
 
 
-const endpoint = '/categories/';
+const endpoint = '/products/';
 
 
-function CategoriesGetList(props) {
+function ProductsGetList(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
@@ -18,17 +18,18 @@ function CategoriesGetList(props) {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(100);
     const [name, setName] = useState('');
-    const [attributes, setAttributes] = useState(-1);
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState(-1);
 
     // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['attributes'], setIsLoading, props.tokens.accessTokenData.token);
-
+    const options = useGetOptions(['categories'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const queryParams = { page, size };
         if (name) queryParams.name = name;
-        if (attributes != -1) queryParams.attributes = attributes;
+        if (brand) queryParams.brand = brand;
+        if (category != -1) queryParams.category = category;
 
         const request = {
             endpoint,
@@ -47,7 +48,7 @@ function CategoriesGetList(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Categories - Get List</div>
+                <div className="form__title">Products - Get List</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
                     <div>Query Params:</div>
                     <div className="form__field">
@@ -63,9 +64,13 @@ function CategoriesGetList(props) {
                         <input value={name} onInput={(event) => setName(event.target.value)} />
                     </div>
                     <div className="form__field">
-                        <label>Attributes</label>
+                        <label>Brand</label>
+                        <input value={brand} onInput={(event) => setBrand(event.target.value)} />
+                    </div>
+                    <div className="form__field">
+                        <label>Category</label>
                         <Selector
-                            id={attributes} setId={setAttributes} options={options['attributes']}
+                            id={category} setId={setCategory} options={options['categories']}
                         />
                     </div>
                     <button onClick={executeRequest}>Execute</button>
@@ -78,4 +83,4 @@ function CategoriesGetList(props) {
     );
 }
 
-export default CategoriesGetList;
+export default ProductsGetList;

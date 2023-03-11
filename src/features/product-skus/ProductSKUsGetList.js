@@ -7,28 +7,33 @@ import useGetOptions from '../../utils/useGetOptions';
 
 
 
-const endpoint = '/categories/';
+const endpoint = '/product_skus/';
 
 
-function CategoriesGetList(props) {
+function ProductSKUsGetList(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(100);
-    const [name, setName] = useState('');
-    const [attributes, setAttributes] = useState(-1);
+    const [description, setDescription] = useState('');
+    const [product, setProduct] = useState(-1);
+    const [isValid, setIsValid] = useState(-1);
+    const isValidOptions = [
+        { id: true, name : 'True' },
+        { id: false, name : 'False' },
+    ]
 
     // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['attributes'], setIsLoading, props.tokens.accessTokenData.token);
-
+    const options = useGetOptions(['products'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
         const queryParams = { page, size };
-        if (name) queryParams.name = name;
-        if (attributes != -1) queryParams.attributes = attributes;
+        if (description) queryParams.name = description;
+        if (product != -1) queryParams.product = product;
+        if (isValid != -1) queryParams.is_valid = isValid;
 
         const request = {
             endpoint,
@@ -47,7 +52,7 @@ function CategoriesGetList(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Categories - Get List</div>
+                <div className="form__title">Product SKUs - Get List</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
                     <div>Query Params:</div>
                     <div className="form__field">
@@ -59,13 +64,19 @@ function CategoriesGetList(props) {
                         <input value={size} onInput={(event) => setSize(event.target.value)} />
                     </div>
                     <div className="form__field">
-                        <label>Name</label>
-                        <input value={name} onInput={(event) => setName(event.target.value)} />
+                        <label>Description</label>
+                        <input value={description} onInput={(event) => setDescription(event.target.value)} />
                     </div>
                     <div className="form__field">
-                        <label>Attributes</label>
+                        <label>Product</label>
                         <Selector
-                            id={attributes} setId={setAttributes} options={options['attributes']}
+                            id={product} setId={setProduct} options={options['products']}
+                        />
+                    </div>
+                    <div className="form__field">
+                        <label>Is Valid</label>
+                        <Selector
+                            id={isValid} setId={setIsValid} options={isValidOptions}
                         />
                     </div>
                     <button onClick={executeRequest}>Execute</button>
@@ -78,4 +89,4 @@ function CategoriesGetList(props) {
     );
 }
 
-export default CategoriesGetList;
+export default ProductSKUsGetList;

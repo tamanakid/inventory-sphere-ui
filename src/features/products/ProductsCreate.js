@@ -8,54 +8,29 @@ import useGetOptions from '../../utils/useGetOptions';
 
 
 
-function CategoriesUpdate(props) {
+const endpoint = '/products/';
+
+function ProductsCreate(props) {
     const [request, setRequest] = useState('');
     const [response, setResponse] = useState({ status: 'none' });
 
     // Form fields
-    const [instanceId, setInstanceId] = useState(-1);
     const [name, setName] = useState('');
-    const [parentId, setParentId] = useState(-1);
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState(-1);
     const [attributesRequired, setAttributesRequired] = useState([]);
     const [attributesNotRequired, setAttributesNotRequired] = useState([]);
 
-    // Cool effect: when selecting instance, fetch category info and fill all fields
-    useEffect(() => {
-        if (instanceId != -1)
-            getCategoryDetails();
-    }, [instanceId]);
-
-    async function getCategoryDetails() {
-        const response = await sendRequest({
-            endpoint: `/categories/${instanceId}`,
-            method: 'GET',
-            accessToken: props.tokens.accessTokenData.token
-        });
-        if (response.body?.['status_code'] === 200) {
-            const instanceData = response.body.data;
-            setName(instanceData.name ?? '');
-            setParentId(instanceData.parent ?? -1);
-            setAttributesRequired(instanceData.attributes.filter(a => a['is_attribute_required']).map(a => a.id));
-            setAttributesNotRequired(instanceData.attributes.filter(a => !a['is_attribute_required']).map(a => a.id));
-        }
-    }
-
     // At component start: load existing Attributes and Categories
     const [isLoading, setIsLoading] = useState(true);
-    const options = useGetOptions(['categories', 'attributes'], setIsLoading, props.tokens.accessTokenData.token);
-
-    // Set endpoint URL with id param
-    const [endpoint, setEndpoint] = useState('/categories/');
-    useEffect(() => {
-        setEndpoint(`/categories/${instanceId}`);
-    }, [instanceId]);
+    const options = useGetOptions(['categories', 'attributes', 'products'], setIsLoading, props.tokens.accessTokenData.token);
 
     async function executeRequest() {
-        const parent = parentId == -1 ? null : parentId;
+        const parent = category == -1 ? null : category;
         const request = {
             endpoint,
-            method: 'PUT',
-            body: { name, parent, 'attribute_ids_required': attributesRequired, 'attribute_ids_not_required': attributesNotRequired, },
+            method: 'POST',
+            body: { name, brand, category, 'attribute_ids_required': attributesRequired, 'attribute_ids_not_required': attributesNotRequired, },
             accessToken: props.tokens.accessTokenData.token
         };
 
@@ -69,20 +44,20 @@ function CategoriesUpdate(props) {
     return (
         <Layout
             form={(<div>
-                <div className="form__title">Categories - Update</div>
+                <div className="form__title">Products - Create</div>
                 {isLoading ? <div className="form__field">Loading...</div> : <>
-                    <div className="form__field">
-                        <label>Instance</label>
-                        <Selector id={instanceId} setId={setInstanceId} options={options['categories'] ?? []} />
-                    </div>
                     <div>Request Body:</div>
                     <div className="form__field">
                         <label>Name</label>
                         <input value={name} onInput={(event) => setName(event.target.value)} />
                     </div>
                     <div className="form__field">
+                        <label>Brand</label>
+                        <input value={brand} onInput={(event) => setBrand(event.target.value)} />
+                    </div>
+                    <div className="form__field">
                         <label>Parent Category</label>
-                        <Selector id={parentId} setId={setParentId} options={options['categories'] ?? []} />
+                        <Selector id={category} setId={setCategory} options={options['categories'] ?? []} />
                     </div>
                     <div className="form__field">
                         <label>Attributes (Required)</label>
@@ -106,4 +81,4 @@ function CategoriesUpdate(props) {
     );
 }
 
-export default CategoriesUpdate;
+export default ProductsCreate;
